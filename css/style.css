@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,900&display=swap');
+
+:root {
+    --headingsFont: 'Montserrat', sans-serif;
+    --bodyFont: 'Roboto', sans-serif;
+    --fontSize: 16px;
+    --gray: rgb(59,68,77);
+    --lightgray: rgba(219, 219, 171, 0.294);
+    --white: rgb(255,255,255);
+    --red: rgb(255,0,0);
+    --lightRed: rgba(255, 0, 0, 0.397);
+    --black: rgb(0, 0, 0);
+    --transition: .3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    box-sizing: border-box;
+    font-size: var(--fontSize);
+    font-family: var(--bodyFont);
+}
+
+.container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* HEADER */
+
+header img {
+    padding: 30px 0 0 30px;
+}
+
+header div::after {
+    content: "";
+    width: 90%;
+    height: 2px;
+    background-color: var(--red);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    font-family: --var(--headingsFont);
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+h3 {
+    margin: 30px 0 30px 30px;
+}
+
+/* FIRST TEAM */
+
+#first-squad {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: 20px;
+}
+
+section:first-child {
+    margin-top: 50px;
+   
+}
+
+article {
+    background-color: var(--lightgray);
+    width: 20%;
+    min-width: 170px;
+    border: solid 1px rgba(255,0,0,0.3);
+    text-align: center;
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+    margin-right: 20px;
+    width: 200px;
+}
+
+#first-squad:after {
+    content: "";
+    width: 90%;
+    height: 2px;
+    background-color: var(--red);
+    display: block;
+    margin-bottom: 0px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section img {
+    padding: 25px 0 20px 0
+}
+
+article p {
+    line-height: 25px;
+}
+
+/* SUBSTITUTIONS */
+
+#reserve-players:after {
+    content: "";
+    width: 90%;
+    height: 2px;
+    background-color: var(--red);
+    display: block;
+    margin-bottom: 0px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#reserve-players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: 20px;
+}
+
+/* DESCRIPTION */
+
+main > p {
+    padding: 0 20px
+}
+
+main > p:nth-child(6) {
+    margin-bottom: 20px;
+}
+
+main > p:last-child {
+    margin-bottom: 60px;
+    margin-top: 20px;
+}
+
+main > div {
+    background-color: var(--lightGray);
+    color: var(--black);
+    max-width: 200px;
+    width: 100px;
+    padding: 10px 15px;
+    text-align: center;
+    margin: 30px auto 0 auto;
+    border: 2px solid var(--red);
+    font-weight: bold;
+}
+
+.red-background {
+    background-color: var(--lightRed);
+    border: 2px solid var(--black);
+}
+
+#timer-text, #timer-num {
+    display: inline-block;
+}
+
+#timer-text {
+    margin-right: 10px;
+}
+
