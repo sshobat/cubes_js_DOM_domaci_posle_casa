@@ -62,7 +62,7 @@
 
 //starting object
 
-var zvezda = {
+const zvezda = {
     teamName: 'FC RED STAR',
     teamLogoPath: './img/fkcz_logo.png',
     teamLogoDesc: 'Red Star logo',
@@ -190,174 +190,117 @@ var zvezda = {
     ]
 };
 
-var header = document.querySelector('header>div');
+// select header, timer
+const header = document.querySelector('header > div');
+let timer = document.getElementById('timer-num');
 
-function insertLogo() {
-    var logo = document.createElement('img');
-    logo.setAttribute('src', zvezda.teamLogoPath);
-    header.prepend(logo);
+// change interval (s)
+const timeStart = 60;
+
+// function that creates new elements: text, image, heading
+const newEl = (el, imgPath, text) => {
+    const element = document.createElement(el);
+    imgPath ? element.setAttribute('src', imgPath) : null;
+    text ? element.textContent = text : null;
+    
+    return element;
 }
 
-function insertHeading() {
-    var heading = document.createElement('h1');
-    heading.textContent = zvezda.teamName + ' APPLICATION';
-    header.appendChild(heading);
+// insert logo into DOM
+const insertLogo = () => {
+    header.prepend(newEl('img', zvezda.teamLogoPath));
 }
-
-function randomArrIndex(arr) {
-    return Math.floor(Math.random() * arr.length) ;
+// insert heading into DOM
+const insertHeading = () => {
+    header.appendChild(newEl('h1', null, `${zvezda.teamName} APPLICATION`));
 }
+// generate random number from the input arr indexes
+const randomArrIndex = arr => Math.floor(Math.random() * arr.length);
 
-function insertPlayers(arr) {
-
-    var firstTeam = document.getElementById('first-squad');
-    var secondTeam = document.getElementById('reserve-players');
+// insert players to first team section and reserves section
+const insertPlayers = arr => {
+    const firstTeam = document.getElementById('first-squad');
+    const secondTeam = document.getElementById('reserve-players');
     
     while(arr.length) {
-
-        var playerIndex = randomArrIndex(arr);
-
+        let playerIndex = randomArrIndex(arr);
         arr.length > 4 ? firstTeam.prepend(createPlayer(playerIndex)) : secondTeam.prepend(createPlayer(playerIndex));
-
         arr.splice(playerIndex, 1);
     }
-
 }
 
-function createPlayer(index) {
+// create one player
+const createPlayer = index => {
 
-    var player = document.createElement('article');
+    const player = newEl('article');
 
-    var image = document.createElement('img');
-    image.setAttribute('src', zvezda.players[index].photoPath);
-    player.prepend(image);
-
-    var playerText = document.createElement('div');
-    player.appendChild(playerText);
-    var name = "<p>Name: " + zvezda.players[index].firstName + " " + zvezda.players[index].lastName + "</p>";
-    var number = "<p>Number: " + zvezda.players[index].number + "</p>";
-    var position = "<p>Position: " + zvezda.players[index].position + "</p>";
-    var age = "<p>Age: " + zvezda.players[index].age + "</p>";
-
-    playerText.innerHTML = name + number + position + age;
+    player.prepend(newEl('img', zvezda.players[index].photoPath));
+    player.appendChild(newEl('p', null, `Name: ${zvezda.players[index].firstName} ${zvezda.players[index].lastName}`));
+    player.appendChild(newEl('p', null, `Number: ${zvezda.players[index].number}`));
+    player.appendChild(newEl('p', null, `Position: ${zvezda.players[index].position}`));
+    player.appendChild(newEl('p', null, `Age: ${zvezda.players[index].age}`));
 
     return player;
 }
+// create counter that changes player every 60s
+const counter = () => {
+    const timerBox = document.querySelector('main > div');
+    let time = timeStart;
 
-function appInit() {
-    insertLogo();
-    insertHeading();
-    insertPlayers(zvezda.players);
-}
-appInit();
-
-var timer;
-var timeStart = 60;
-
-function counter() {
-
-    var time = timeStart;
-
-    timer = document.getElementById('timer-num');
     timer.textContent = timeStart;
-    var timerBox = document.querySelector('main > div');
-
-    setInterval(function() {
-
-        if(time > 1) {
-            time--;
-        }
-        else {
-            time = timeStart;
-        }
+    
+    setInterval(() => {
+        time > 1 ? time-- : time = timeStart;
         timer.textContent = time;
-
-        if(time < 11) {
-            timerBox.classList.add('red-background');
-        } else {
-            timerBox.classList.remove('red-background'); 
-        }
+        time < 11 ? timerBox.classList.add('red-background') : timerBox.classList.remove('red-background'); 
     }, 1000);
 }
 
-var firstTeamPlayers;
-var reservePlayers;
 
-var firstTeamRandomIndex;
-var reserveRandomIndex;
 
-function changePlayers() {
+// make player change
+const changePlayers = () => {
 
-    firstTeamPlayers = document.querySelectorAll('#first-squad article');
-    reservePlayers = document.querySelectorAll('#reserve-players article');
+    timer.textContent = timeStart;
+    counter();
 
-    firstTeamRandomIndex = randomArrIndex(firstTeamPlayers);
-    reserveRandomIndex = randomArrIndex(reservePlayers);
+    const firstTeamPlayers = document.querySelectorAll('#first-squad article');
+    const reservePlayers = document.querySelectorAll('#reserve-players article');
 
-    var reserveBefore = reservePlayers[reserveRandomIndex].previousElementSibling;
-    var reserveAfter = reservePlayers[reserveRandomIndex].nextElementSibling;
+    const firstTeamRandomIndex = randomArrIndex(firstTeamPlayers);
+    const reserveRandomIndex = randomArrIndex(reservePlayers);
+
+    const reserveBefore = reservePlayers[reserveRandomIndex].previousElementSibling;
+    const reserveAfter = reservePlayers[reserveRandomIndex].nextElementSibling;
 
     firstTeamPlayers[firstTeamRandomIndex].before(reservePlayers[reserveRandomIndex]);
 
-    if(reserveBefore) {
-        reserveBefore.after(firstTeamPlayers[firstTeamRandomIndex]);
-    } else {
-        reserveAfter.before(firstTeamPlayers[firstTeamRandomIndex]);
+    reserveBefore ? reserveBefore.after(firstTeamPlayers[firstTeamRandomIndex]) : reserveAfter.before(firstTeamPlayers[firstTeamRandomIndex]);
+
+    // mark with red background of players that are changed
+    const playerBackOn = () => {
+        firstTeamPlayers[firstTeamRandomIndex].classList.add('red-background');
+        reservePlayers[reserveRandomIndex].classList.add('red-background');
     }
+    // delete red background of players that are changed
+    const playerBackOff = () => {
+        firstTeamPlayers[firstTeamRandomIndex].classList.remove('red-background');
+        reservePlayers[reserveRandomIndex].classList.remove('red-background');
+    }
+
+    playerBackOn();
+    setTimeout(() => {
+        playerBackOff();
+    }, 2000);
+
 }
 
-function playerBackOn() {
-    firstTeamPlayers[firstTeamRandomIndex].classList.add('red-background');
-    reservePlayers[reserveRandomIndex].classList.add('red-background');
-}
-
-function playerBackOff() {
-    firstTeamPlayers[firstTeamRandomIndex].classList.remove('red-background');
-    reservePlayers[reserveRandomIndex].classList.remove('red-background');
-}
-
-counter();
-
-function change() {
-    timer.textContent = timeStart;
+const appInit = () => {
+    insertLogo();
+    insertHeading();
+    insertPlayers(zvezda.players);
     counter();
-    changePlayers();
-    playerBackOn()
-    setTimeout(playerBackOff, 2000);
+    setInterval(changePlayers, timeStart * 1000);
 }
-setInterval(change, 60000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+appInit();
 
